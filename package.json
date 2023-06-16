@@ -1,0 +1,21 @@
+{
+  "name": "nodejs_ts_playwright_allure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test --headed",
+    "test:reporter": "playwright test --headed --reporter=allure-playwright,line",
+    "allure-report": "npx allure generate ./allure-results --clean && allure open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.35.0",
+    "allure-playwright": "^2.4.0"
+  },
+  "dependencies": {
+    "pdfkit": "^0.13.0"
+  }
+}
