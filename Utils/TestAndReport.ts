@@ -3,17 +3,6 @@ const fs = require ( 'fs' );
 const {resolve} = require("path");
 const {exec} = require("child_process");
 
-
-// executeTest(
-//     "Corso rahul shetty",
-//     {
-//         show: false,
-//         single: true
-//     })
-
-
-// FUNZIONALITA'
-
 /**
  * Esegue tutti i test o un singolo test all'interno dei file .spec.js situati nella cartella /tests
  * @param {String} testName - Il nome del file o del singolo test da eseguire
@@ -199,7 +188,8 @@ function copyAndRenameTrace() {
 
 
 module.exports = {
-    executeCommand
+    executeCommand,
+    executeTest
 }
 
 
