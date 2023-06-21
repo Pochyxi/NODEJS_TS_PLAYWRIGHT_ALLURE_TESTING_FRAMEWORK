@@ -13,6 +13,7 @@ class StepperGen {
     _test;
     _arrOfStepObj;
     _pdfReporter;
+    _pdfName;
 
     constructor(test, arrOfStepObj) {
         this._test = test;
@@ -38,7 +39,7 @@ class StepperGen {
                 }
             }
 
-            this._pdfReporter.savePDF(testinfo.title)
+            this._pdfReporter.savePDF(this._pdfName)
         })
     }
 
@@ -76,8 +77,10 @@ class StepperGen {
 
         const dateName = `${year}_${month}_${day}__${hours}_${minutes}`;
 
+        this._pdfName = testinfo.title + "__" + dateName
+
         const screenshotName = `${testinfo.title}__${name}__${dateName}.png`;
-        const screenshotPath = path.join('json_configs/img/', screenshotName);
+        const screenshotPath = path.join('PDFReports/img/', screenshotName);
 
         await page.screenshot({ path: screenshotPath });
 

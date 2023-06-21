@@ -10,5 +10,5 @@ executeTest(
     "",
     {
         show: true,
-        single: true
+        single: false,
     })

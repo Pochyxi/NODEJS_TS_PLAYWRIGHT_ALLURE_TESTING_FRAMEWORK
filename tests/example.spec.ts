@@ -1,5 +1,6 @@
 import {test, expect} from '@playwright/test';
-const { StepperGen } = require('../Utils/StepperGen.ts')
+
+const {StepperGen} = require('../Utils/StepperGen.ts')
 
 // test('has title', async ({ page }) => {
 //   await page.goto('https://playwright.dev/');
@@ -18,12 +19,12 @@ const { StepperGen } = require('../Utils/StepperGen.ts')
 //   await expect(page).toHaveURL(/.*intro/);
 // });
 //
-// const pageSelectors = {
-//   pageUrl: 'https://rahulshettyacademy.com/AutomationPractice/',
-//   inputRadio1: "#radio-btn-example > fieldset > label:nth-child(2) > input",
-//   inputRadio2: "#radio-btn-example > fieldset > label:nth-child(3) > input",
-//   inputRadio3: "#radio-btn-example > fieldset > label:nth-child(4) > input",
-// }
+const pageSelectors = {
+    pageUrl: 'https://rahulshettyacademy.com/AutomationPractice/',
+    inputRadio1: "#radio-btn-example > fieldset > label:nth-child(2) > input",
+    inputRadio2: "#radio-btn-example > fieldset > label:nth-child(3) > input",
+    inputRadio3: "#radio-btn-example > fieldset > label:nth-child(4) > input",
+}
 //
 // test('Corso rahul shetty', async ({ page }, testInfo) => {
 //
@@ -88,5 +89,9 @@ const arrOfStepObj = [
     }
 ]
 
+
 const stepperGen = new StepperGen(test, arrOfStepObj)
-stepperGen.runTest('@chrome CarmineUrcioli')
+stepperGen.runTest('CarmineUrcioli')
+
+
+

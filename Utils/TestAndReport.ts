@@ -13,12 +13,13 @@ function executeTest(testName, params) {
     let checkedSingle = params?.single ? params.single : false
     let checkedShow = params?.show ? params.show : false
 
+
     if (checkedSingle) {
-        let conditionalTestName = checkedShow ? '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts"
+        let conditionalTestName = checkedShow ? '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
         console.log("ESEGUO SINGOLO TEST DI NOME '" + testName + "'")
         executeTestCommand("test -g " + conditionalTestName)
     } else {
-        let conditionalTestName = checkedShow ? testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts"
+        let conditionalTestName = checkedShow ? testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
         console.log("ESEGUO TUTTI I TEST NEL GRUPPO TEST DI NOME '" + testName + "'")
         executeTestCommand("test " + conditionalTestName)
     }
