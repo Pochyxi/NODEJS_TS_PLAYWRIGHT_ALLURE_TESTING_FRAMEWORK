@@ -7,7 +7,7 @@ const {executeTest} = require('./Utils/TestAndReport.ts')
  * @param {Boolean} {show} - Default false - Se specificato apre la finestra e visualizza il test in esecuzione
  */
 executeTest(
-    "Corso rahul shetty",
+    "",
     {
         show: true,
         single: true

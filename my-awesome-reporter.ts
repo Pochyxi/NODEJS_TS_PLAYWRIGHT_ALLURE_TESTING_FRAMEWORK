@@ -2,15 +2,15 @@ import { Reporter, FullConfig, Suite, TestCase, TestResult, FullResult } from '@
 
 class MyReporter implements Reporter {
     constructor(options: { customOption?: string } = {}) {
-        console.log(`my-awesome-reporter setup with customOption set to ${options.customOption}`);
+        // console.log(`my-awesome-reporter setup with customOption set to ${options.customOption}`);
     }
 
     onBegin(config: FullConfig, suite: Suite) {
-        console.log(`MR--Starting the run with ${suite.allTests().length} tests`);
+        // console.log(`MR--Starting the run with ${suite.allTests().length} tests`);
     }
 
     onTestBegin(test: TestCase) {
-        console.log(`MR--Starting test ${test.title}`);
+        // console.log(`MR--Starting test ${test.title}`);
     }
 
     onTestEnd(test: TestCase, result: TestResult) {

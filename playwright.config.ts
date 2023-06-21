@@ -52,11 +52,13 @@ export default defineConfig({
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      testMatch: ['**/*.spec.js', '!**/*.spec.js', '@firefox']
     },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      testMatch: ['**/*.spec.js', '!**/*.spec.js', '@webkit']
     },
 
     /* Test against mobile viewports. */

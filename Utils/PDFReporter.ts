@@ -36,19 +36,19 @@ class PDFReporter {
         this.doc = new PDFDocument();
     }
 
-     insertStepPDF(imagePath) {
+     insertStepPDF(imagePath, stepName) {
         const docWidth = this.doc.page.width;
 
         const image = this.doc.openImage(imagePath);
         const imageWidth = docWidth;
 
-        this.doc.text(this.doc.image.name, {align: 'center'});
+        this.doc.text(stepName, {align: 'center'});
         this.doc.image(image, {width: imageWidth, x: 0});
 
     }
 
-     savePDF() {
-        this.doc.pipe(fs.createWriteStream('PDFReports/output.pdf'));
+     savePDF(filename) {
+        this.doc.pipe(fs.createWriteStream('PDFReports/' + filename + '.pdf'));
         this.doc.end();
     }
 }
