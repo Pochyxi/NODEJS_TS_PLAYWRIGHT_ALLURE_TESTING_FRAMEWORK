@@ -24,6 +24,12 @@ class ActionExecutor {
 
     runTest(testName) {
         this._test(testName, async ({ page }, testinfo) => {
+            this._pdfReporter.addHeader(
+                testinfo.title,
+                testinfo.project.name,
+                this.getActualDateStringObj().day + "/" + this.getActualDateStringObj().month + "/" + this.getActualDateStringObj().year,
+                this.getActualDateStringObj().hours + ":" + this.getActualDateStringObj().minutes
+            )
 
 
             for (const stepObj of this._arrOfStepObj) {
@@ -68,6 +74,18 @@ class ActionExecutor {
     }
 
     async takeScreenshot(page, testinfo, name) {
+
+        this._pdfName = testinfo.title + "__" + testinfo.project.name + "__" + this.getActualDateStringObj().dateName
+
+        const screenshotName = `${testinfo.title}__${name}__${this.getActualDateStringObj().dateName}.png`;
+        const screenshotPath = path.join('PDFReports/img/', screenshotName);
+
+        await page.screenshot({ path: screenshotPath });
+
+        this._pdfReporter.insertStepPDF(screenshotPath, name)
+    }
+
+    getActualDateStringObj() {
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -77,14 +95,14 @@ class ActionExecutor {
 
         const dateName = `${year}_${month}_${day}__${hours}_${minutes}`;
 
-        this._pdfName = testinfo.title + "__" + testinfo.project.name + "__" + dateName
-
-        const screenshotName = `${testinfo.title}__${name}__${dateName}.png`;
-        const screenshotPath = path.join('PDFReports/img/', screenshotName);
-
-        await page.screenshot({ path: screenshotPath });
-
-        this._pdfReporter.insertStepPDF(screenshotPath, name)
+        return {
+            dateName: dateName,
+            year: year,
+            month: month,
+            day: day,
+            hours: hours,
+            minutes: minutes
+        }
     }
 }
 

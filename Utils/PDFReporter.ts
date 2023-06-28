@@ -4,18 +4,49 @@ const path = require('path');
 
 class PDFReporter {
     private doc;
+    private stepCount = 0
 
     constructor() {
         this.doc = new PDFDocument();
+        this.stepCount++
+    }
+
+    addHeader(testName, projectName, data, ora) {
+
+        this.doc.fontSize(20);
+        this.doc.font('Helvetica-Bold');
+
+        this.doc.text(testName, { align: 'center' });
+        this.doc.moveDown(2);
+        this.doc.fontSize(16);
+        this.doc.text("Progetto: " + projectName, { align: 'start' });
+        this.doc.text("Del: " + data, { align: 'start' });
+        this.doc.text("Ore: " + ora, { align: 'start' });
+
+        this.doc.moveDown(5);
+
     }
 
     insertStepPDF(imagePath, stepName) {
+        if (this.stepCount > 1) {
+            this.doc.addPage();
+        }
+
         const docWidth = this.doc.page.width;
         const image = this.doc.openImage(imagePath);
         const imageWidth = docWidth;
 
-        this.doc.text(stepName, { align: 'center' });
+        this.doc.fontSize(14);
+        this.doc.fillColor('#000080');
+
+        this.doc.text("STEP |" + this.stepCount + "|", { align: 'center' });
+        this.doc.text(stepName, { align: 'start' });
+        this.doc.moveDown(1);
         this.doc.image(image, { width: imageWidth, x: 0 });
+
+        this.doc.moveDown(4);
+
+        this.stepCount++
     }
 
     async savePDF(filename) {
