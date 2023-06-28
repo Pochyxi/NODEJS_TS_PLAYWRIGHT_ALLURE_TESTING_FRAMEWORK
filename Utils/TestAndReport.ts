@@ -121,7 +121,7 @@ function executeAllureReport() {
  * @param {string} testOriginPath - Il percorso delle tracce di test originali.
  */
 function copyAndRenameTrace() {
-    let baseDestinationFolder = "./myTraces";
+    let baseDestinationFolder = "./TracesReports";
     const testOriginPath = "./test-results";
     let arrOfTraceNames = getSubfolderNames(testOriginPath);
     let arrOfTracesToOpen = [];

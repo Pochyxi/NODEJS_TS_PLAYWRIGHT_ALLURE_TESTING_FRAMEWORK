@@ -9,7 +9,7 @@ const pageSelectors = {
     inputRadio3: "#radio-btn-example > fieldset > label:nth-child(4) > input",
 }
 
-class StepperGen {
+class ActionExecutor {
     _test;
     _arrOfStepObj;
     _pdfReporter;
@@ -89,5 +89,5 @@ class StepperGen {
 }
 
 module.exports= {
-    StepperGen
+    ActionExecutor: ActionExecutor
 }

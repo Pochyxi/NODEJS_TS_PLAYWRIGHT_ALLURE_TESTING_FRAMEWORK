@@ -1,8 +1,8 @@
-node_modules/
+/node_modules/
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/myTraces/
+/TracesReports/
 /allure-results/
 /allure-report/
 /json_configs/

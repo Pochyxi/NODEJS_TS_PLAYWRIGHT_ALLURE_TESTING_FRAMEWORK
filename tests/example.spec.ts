@@ -1,6 +1,5 @@
 import {test, expect} from '@playwright/test';
-
-const {StepperGen} = require('../Utils/StepperGen.ts')
+const {ActionExecutor} = require('../Utils/ActionExecutor.ts')
 
 // test('has title', async ({ page }) => {
 //   await page.goto('https://playwright.dev/');
@@ -90,8 +89,8 @@ const arrOfStepObj = [
 ]
 
 
-const stepperGen = new StepperGen(test, arrOfStepObj)
-stepperGen.runTest('TestDiProva')
+const testExecutor = new ActionExecutor(test, arrOfStepObj)
+testExecutor.runTest('Prova_1')
 
 
 
