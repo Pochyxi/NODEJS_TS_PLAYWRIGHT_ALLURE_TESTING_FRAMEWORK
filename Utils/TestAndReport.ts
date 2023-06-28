@@ -12,16 +12,17 @@ const {exec} = require("child_process");
 function executeTest(testName, params) {
     let checkedSingle = params?.single ? params.single : false
     let checkedShow = params?.show ? params.show : false
+    let projectName = params?.project ? " --project=" + params.project : ""
 
 
     if (checkedSingle) {
         let conditionalTestName = checkedShow ? '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
         console.log("ESEGUO SINGOLO TEST DI NOME '" + testName + "'")
-        executeTestCommand("test -g " + conditionalTestName)
+        executeTestReportDashboard("test -g " + conditionalTestName + projectName)
     } else {
         let conditionalTestName = checkedShow ? testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
         console.log("ESEGUO TUTTI I TEST NEL GRUPPO TEST DI NOME '" + testName + "'")
-        executeTestCommand("test " + conditionalTestName)
+        executeTestReportDashboard("test " + conditionalTestName + projectName)
     }
 
 }
@@ -54,7 +55,7 @@ function executeCommand(command) {
 /*** Esegue un comando di test di Playwright e gestisce gli output e gli errori.
  * @param {string} pwCommand Il comando di test di Playwright da eseguire.
  */
-function executeTestCommand(pwCommand) {
+function executeTestReportDashboard(pwCommand) {
     console.log("Eseguo comando -> " + 'npx playwright ' + pwCommand)
     const command = 'npx playwright ' + pwCommand
     const options = {
@@ -74,6 +75,7 @@ function executeTestCommand(pwCommand) {
     childProcess.on('close', (code) => {
         console.log(`Completato con codice di uscita ${code}`);
 
+
         executeAllureReport()
     });
 }
@@ -85,7 +87,8 @@ function executeTestCommand(pwCommand) {
  * copyAndRenameTrace() -> Copia il trace di Playwright, lo rinomina e lo sposta in una cartella
  * */
 function executeAllureReport() {
-    // const command = "npm run allure-report"
+    console.log("Generazione report allure, apertura dashboard allure e lancio del trace viewer")
+    console.log("ATTENDERE...")
 
     const command = "npx allure generate ./allure-results --clean"
 

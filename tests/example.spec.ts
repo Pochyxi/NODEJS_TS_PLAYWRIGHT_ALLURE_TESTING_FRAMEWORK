@@ -91,7 +91,7 @@ const arrOfStepObj = [
 
 
 const stepperGen = new StepperGen(test, arrOfStepObj)
-stepperGen.runTest('CarmineUrcioli')
+stepperGen.runTest('TestDiProva')
 
 
 

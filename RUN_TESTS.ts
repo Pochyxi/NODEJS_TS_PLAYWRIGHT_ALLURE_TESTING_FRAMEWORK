@@ -11,4 +11,5 @@ executeTest(
     {
         show: true,
         single: false,
+        project: "chromium"
     })

@@ -77,7 +77,7 @@ class StepperGen {
 
         const dateName = `${year}_${month}_${day}__${hours}_${minutes}`;
 
-        this._pdfName = testinfo.title + "__" + dateName
+        this._pdfName = testinfo.title + "__" + testinfo.project.name + "__" + dateName
 
         const screenshotName = `${testinfo.title}__${name}__${dateName}.png`;
         const screenshotPath = path.join('PDFReports/img/', screenshotName);
