@@ -6,23 +6,23 @@ const {exec} = require("child_process");
 /**
  * Esegue tutti i test o un singolo test all'interno dei file .spec.js situati nella cartella /tests
  * @param {String} testName - Il nome del file o del singolo test da eseguire
- * @param {Boolean} {single} - Default false - Specifica se il nome dato è un singolo test oppure un file
- * @param {Boolean} {show} - Default false - Se specificato apre la finestra e visualizza il test in esecuzione
+ * @param params
  */
 function executeTest(testName, params) {
     let checkedSingle = params?.single ? params.single : false
     let checkedShow = params?.show ? params.show : false
     let projectName = params?.project ? " --project=" + params.project : ""
+    let showDashboard = params?.showDashboear ? params.showDashboear : false
 
 
     if (checkedSingle) {
         let conditionalTestName = checkedShow ? '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
         console.log("ESEGUO SINGOLO TEST DI NOME '" + testName + "'")
-        executeTestReportDashboard("test -g " + conditionalTestName + projectName)
+        executeTestReportDashboard("test -g " + conditionalTestName + projectName, showDashboard)
     } else {
         let conditionalTestName = checkedShow ? testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
         console.log("ESEGUO TUTTI I TEST NEL GRUPPO TEST DI NOME '" + testName + "'")
-        executeTestReportDashboard("test " + conditionalTestName + projectName)
+        executeTestReportDashboard("test " + conditionalTestName + projectName, showDashboard)
     }
 
 }
@@ -54,8 +54,9 @@ function executeCommand(command) {
 
 /*** Esegue un comando di test di Playwright e gestisce gli output e gli errori.
  * @param {string} pwCommand Il comando di test di Playwright da eseguire.
+ * @param showDashboard Apre la dashboard di allure
  */
-function executeTestReportDashboard(pwCommand) {
+function executeTestReportDashboard(pwCommand, showDashboard) {
     console.log("Eseguo comando -> " + 'npx playwright ' + pwCommand)
     const command = 'npx playwright ' + pwCommand
     const options = {
@@ -75,8 +76,8 @@ function executeTestReportDashboard(pwCommand) {
     childProcess.on('close', (code) => {
         console.log(`Completato con codice di uscita ${code}`);
 
+        executeAllureReport(showDashboard)
 
-        executeAllureReport()
     });
 }
 
@@ -86,7 +87,7 @@ function executeTestReportDashboard(pwCommand) {
  * executeCommand("npx playwright show-trace") -> Apre il trace di Playwright
  * copyAndRenameTrace() -> Copia il trace di Playwright, lo rinomina e lo sposta in una cartella
  * */
-function executeAllureReport() {
+function executeAllureReport(showDashboard) {
     console.log("Generazione report allure, apertura dashboard allure e lancio del trace viewer")
     console.log("ATTENDERE...")
 
@@ -109,8 +110,11 @@ function executeAllureReport() {
     childProcess.on('close', (code) => {
         console.log(`Completato con codice di uscita ${code}`);
 
-        executeCommand("npx allure open")
-        executeCommand("npx playwright show-trace")
+        if (showDashboard) {
+            executeCommand("npx allure open")
+            executeCommand("npx playwright show-trace")
+        }
+
         copyAndRenameTrace()
     });
 }

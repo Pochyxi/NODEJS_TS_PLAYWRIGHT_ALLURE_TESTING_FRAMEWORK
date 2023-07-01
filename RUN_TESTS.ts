@@ -11,5 +11,6 @@ executeTest(
     {
         show: true,
         single: false,
-        project: "chromium"
+        project: "chromium",
+        showDashboeard: false
     })
