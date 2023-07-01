@@ -49,13 +49,25 @@ class PDFReporter {
         this.stepCount++
     }
 
-    async savePDF(filename) {
+    async savePDF(filename, failed) {
         const pdfFolderPath = path.join(__dirname, '../PDFReports');
         const imgFolderPath = path.join(pdfFolderPath, 'img'); // Path per la cartella img
-        const filePath = path.join(pdfFolderPath, `${filename}.pdf`);
+        const filePath = path.join(pdfFolderPath, `${filename}__${failed ? "FAILED" : "PASSED"}.pdf`);
+
 
         // Crea la cartella di destinazione
         await fs.promises.mkdir(pdfFolderPath, { recursive: true });
+
+        this.doc.fontSize(20);
+
+        if (failed) {
+            this.doc.moveDown(4);
+            this.doc.text("FAILED", { align: 'center' });
+        } else {
+            this.doc.moveDown(4);
+            this.doc.text("PASSED", { align: 'center' });
+        }
+
 
         // Salva il file PDF
         await new Promise((resolve, reject) => {
@@ -69,7 +81,7 @@ class PDFReporter {
         const [name, project, date, time] = filename.split('__');
         const [year, month, day] = date.split('_');
         const targetFolderPath = path.join(pdfFolderPath, name + "__" + project, year, month, day);
-        const targetFilePath = path.join(targetFolderPath, `${filename}.pdf`);
+        const targetFilePath = path.join(targetFolderPath, `${filename}__${failed ? "FAILED" : "PASSED"}.pdf`);
 
         await fs.promises.mkdir(targetFolderPath, { recursive: true });
         await fs.promises.rename(filePath, targetFilePath);

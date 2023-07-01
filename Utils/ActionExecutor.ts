@@ -1,4 +1,5 @@
 import {expect, test} from "@playwright/test";
+
 const path = require('path');
 const {PDFReporter} = require('./PDFReporter.ts')
 
@@ -10,43 +11,74 @@ const pageSelectors = {
 }
 
 class ActionExecutor {
-    _test;
-    _arrOfStepObj;
-    _pdfReporter;
-    _pdfName;
+    private test;
+    private arrOfStepObj;
+    private pdfReporter;
+    private pdfName;
+    private resultTest
+    private waitTestFinish: boolean = true;
 
     constructor(test, arrOfStepObj) {
-        this._test = test;
-        this._arrOfStepObj = arrOfStepObj;
-        this._pdfReporter = new PDFReporter();
+        this.test = test;
+        this.arrOfStepObj = arrOfStepObj;
+        this.pdfReporter = new PDFReporter();
+        this.resultTest = true;
     }
 
 
     runTest(testName) {
-        this._test(testName, async ({ page }, testinfo) => {
-            this._pdfReporter.addHeader(
+
+        this.test(testName, async ({page}, testinfo) => {
+            this.pdfReporter.addHeader(
                 testinfo.title,
                 testinfo.project.name,
                 this.getActualDateStringObj().day + "/" + this.getActualDateStringObj().month + "/" + this.getActualDateStringObj().year,
                 this.getActualDateStringObj().hours + ":" + this.getActualDateStringObj().minutes
             )
 
+            async function withTimeout(promise, timeout, is) {
+                let timeoutId;
 
-            for (const stepObj of this._arrOfStepObj) {
+                const timeoutPromise = new Promise((resolve, reject) => {
+                    timeoutId = setTimeout(() => {
+                        is.pdfReporter.savePDF(is.pdfName, true)
+                        reject(new Error("Timeout superato"));
+                    }, timeout);
+                });
+
+                try {
+                    return await Promise.race([promise, timeoutPromise]);
+                } finally {
+                    clearTimeout(timeoutId);
+                }
+            }
+
+
+            for (const stepObj of this.arrOfStepObj) {
+
                 switch (stepObj.actionName) {
                     case "goto":
                         await this.atterraggioPagina(stepObj.args.url, page, testinfo)
                         break;
                     case "click_radio_button_and_check":
-                        await this.clickAndCheckInputRadio(page, testinfo,stepObj.stepName, stepObj.args.selector)
+                        await withTimeout(
+                            this.clickAndCheckInputRadio(page, testinfo, stepObj.stepName, stepObj.args.selector),
+                            10000, this
+                        );
                         break;
                     default:
                         console.log("Non ho trovato l'azione: " + stepObj.actionName)
                 }
             }
 
-            this._pdfReporter.savePDF(this._pdfName)
+            this.pdfReporter.savePDF(this.pdfName, false)
         })
+    }
+
+    timeLimit() {
+        setTimeout(() => {
+            this.pdfReporter.savePDF(this.pdfName, true)
+        }, 30 * 1000)
     }
 
     async atterraggioPagina(url, page, testinfo) {
@@ -75,14 +107,14 @@ class ActionExecutor {
 
     async takeScreenshot(page, testinfo, name) {
 
-        this._pdfName = testinfo.title + "__" + testinfo.project.name + "__" + this.getActualDateStringObj().dateName
+        this.pdfName = testinfo.title + "__" + testinfo.project.name + "__" + this.getActualDateStringObj().dateName
 
         const screenshotName = `${testinfo.title}__${name}__${this.getActualDateStringObj().dateName}.png`;
         const screenshotPath = path.join('PDFReports/img/', screenshotName);
 
-        await page.screenshot({ path: screenshotPath });
+        await page.screenshot({path: screenshotPath});
 
-        this._pdfReporter.insertStepPDF(screenshotPath, name)
+        this.pdfReporter.insertStepPDF(screenshotPath, name)
     }
 
     getActualDateStringObj() {
@@ -106,6 +138,6 @@ class ActionExecutor {
     }
 }
 
-module.exports= {
+module.exports = {
     ActionExecutor: ActionExecutor
 }

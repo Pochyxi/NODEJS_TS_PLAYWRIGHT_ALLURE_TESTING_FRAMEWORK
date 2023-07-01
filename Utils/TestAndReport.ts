@@ -12,7 +12,7 @@ function executeTest(testName, params) {
     let checkedSingle = params?.single ? params.single : false
     let checkedShow = params?.show ? params.show : false
     let projectName = params?.project ? " --project=" + params.project : ""
-    let showDashboard = params?.showDashboear ? params.showDashboear : false
+    let showDashboard = params?.showDashboard ? params.showDashboard : false
 
 
     if (checkedSingle) {

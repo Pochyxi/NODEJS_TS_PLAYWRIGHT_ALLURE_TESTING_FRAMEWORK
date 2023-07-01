@@ -7,10 +7,10 @@ const {executeTest} = require('./Utils/TestAndReport.ts')
  * @param {Boolean} {show} - Default false - Se specificato apre la finestra e visualizza il test in esecuzione
  */
 executeTest(
-    "",
+    "Prova_1",
     {
         show: true,
-        single: false,
+        single: true,
         project: "chromium",
-        showDashboeard: false
+        showDashboard: false
     })
