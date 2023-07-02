@@ -1,30 +1,21 @@
-const path = require ( 'path' );
-const fs = require ( 'fs' );
+const path = require('path');
+const fs = require('fs');
 const {resolve} = require("path");
 const {exec} = require("child_process");
+const {JSONScribe} = require("../Utils/JSONScribe.ts")
 
 /**
- * Esegue tutti i test o un singolo test all'interno dei file .spec.js situati nella cartella /tests
- * @param {String} testName - Il nome del file o del singolo test da eseguire
  * @param params
  */
-function executeTest(testName, params) {
-    let checkedSingle = params?.single ? params.single : false
+function executeTest(params) {
     let checkedShow = params?.show ? params.show : false
     let projectName = params?.project ? " --project=" + params.project : ""
     let showDashboard = params?.showDashboard ? params.showDashboard : false
 
 
-    if (checkedSingle) {
-        let conditionalTestName = checkedShow ? '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : '"' + testName + '"' + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
-        console.log("ESEGUO SINGOLO TEST DI NOME '" + testName + "'")
-        executeTestReportDashboard("test -g " + conditionalTestName + projectName, showDashboard)
-    } else {
-        let conditionalTestName = checkedShow ? testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : testName + " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
-        console.log("ESEGUO TUTTI I TEST NEL GRUPPO TEST DI NOME '" + testName + "'")
-        executeTestReportDashboard("test " + conditionalTestName + projectName, showDashboard)
-    }
+    let conditionalTestName = checkedShow ? params.project + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
 
+    executeTestReportDashboard("test " + conditionalTestName + projectName, showDashboard)
 }
 
 /*** Esegue un comando specificato come parametro e gestisce gli output e gli errori.
@@ -132,7 +123,15 @@ function copyAndRenameTrace() {
 
     for (const originalPath of arrOfTraceNames) {
         const currentDate = new Date();
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
         // @ts-ignore
         const formatter = new Intl.DateTimeFormat('it-IT', options);
         const formattedDate = formatter.format(currentDate).split('/');
@@ -144,7 +143,7 @@ function copyAndRenameTrace() {
         const destinationFolder = path.join(baseDestinationFolder, originalPath);
         const datePath = path.join(destinationFolder, year, month, day);
         if (!fs.existsSync(datePath)) {
-            fs.mkdirSync(datePath, { recursive: true });
+            fs.mkdirSync(datePath, {recursive: true});
         }
 
         const folderName = path.basename(path.dirname("./test-results/" + originalPath + "/trace.zip"));
@@ -182,12 +181,12 @@ function copyAndRenameTrace() {
     function getSubfolderNames(destinationFolder) {
         const folderNames = [];
 
-        fs.readdirSync ( destinationFolder ).forEach ( (item) => {
-            const itemPath = path.join ( destinationFolder , item );
-            if ( fs.statSync ( itemPath ).isDirectory () ) {
-                folderNames.push ( item );
+        fs.readdirSync(destinationFolder).forEach((item) => {
+            const itemPath = path.join(destinationFolder, item);
+            if (fs.statSync(itemPath).isDirectory()) {
+                folderNames.push(item);
             }
-        } );
+        });
 
         return folderNames;
     }

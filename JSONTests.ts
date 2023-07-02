@@ -6,5 +6,3 @@ console.log(enosisOBJ.getProjectName())
 console.log(enosisOBJ.getProjectVersion())
 console.log(enosisOBJ.getAllCapTests("login"))
 
-
-

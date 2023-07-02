@@ -1,31 +1,45 @@
-import {expect, test} from "@playwright/test";
+import {expect} from "@playwright/test";
 
+const {JSONScribe} = require("./JSONScribe.ts")
 const path = require('path');
 const {PDFReporter} = require('./PDFReporter.ts')
 
-const pageSelectors = {
-    pageUrl: 'https://rahulshettyacademy.com/AutomationPractice/',
-    inputRadio1: "#radio-btn-example > fieldset > label:nth-child(2) > input",
-    inputRadio2: "#radio-btn-example > fieldset > label:nth-child(3) > input",
-    inputRadio3: "#radio-btn-example > fieldset > label:nth-child(4) > input",
-}
-
 class ActionExecutor {
     private readonly test;
-    private readonly arrOfStepObj;
+    private readonly projectObj;
+    private arrOfStepObj;
     private pdfReporter;
     private pdfName;
     private resultTest
     private readonly internalTimeout;
 
-    constructor(test, arrOfStepObj) {
+    constructor(test, projectObjPath) {
         this.test = test;
-        this.arrOfStepObj = arrOfStepObj;
+        this.projectObj = new JSONScribe(projectObjPath);
         this.pdfReporter = new PDFReporter();
         this.resultTest = true;
         this.internalTimeout = 30 * 1000;
+
+        // this.runTests("login")
     }
 
+    runTests() {
+
+        switch (this.projectObj.getRunType()) {
+            case "cap":
+                for (let testName in this.projectObj.getAllCapTests(this.projectObj.getRunName())) {
+                    console.log(testName + ': ' + this.projectObj.getAllCapTests(this.projectObj.getRunName())[testName].testStep);
+                    this.arrOfStepObj = this.projectObj.getAllCapTests(this.projectObj.getRunName())[testName].testStep;
+                    this.runTest(testName)
+                }
+                break;
+            case "test":
+                this.arrOfStepObj = this.projectObj.findValueByKey(this.projectObj.getRunName()).testStep;
+                this.runTest(this.projectObj.getRunName())
+                break;
+        }
+
+    }
 
     runTest(testName) {
         // ******* SETTA LA GRANDEZZA SCHERMO
@@ -40,6 +54,18 @@ class ActionExecutor {
                 this.getActualDateStringObj().day + "/" + this.getActualDateStringObj().month + "/" + this.getActualDateStringObj().year,
                 this.getActualDateStringObj().hours + ":" + this.getActualDateStringObj().minutes
             )
+
+            this.pdfReporter.addDescription(this.projectObj.findValueByKey(testName).description)
+
+            this.pdfReporter.addPreRequisite(this.projectObj.findValueByKey(testName).preRequisite)
+
+            let arrToPassPDFSteps = []
+            let counterStep = 0
+            for (let stepObj of this.projectObj.findValueByKey(testName).testStep) {
+                counterStep++;
+                arrToPassPDFSteps.push(counterStep + ". " + stepObj.stepName)
+            }
+            this.pdfReporter.addSteps(arrToPassPDFSteps)
 
             async function withTimeout(promise, timeout, is) {
                 let timeoutId;
@@ -65,7 +91,7 @@ class ActionExecutor {
                     case "atterraggio_pagina":
                         await withTimeout(
                             await this.atterraggioPagina(stepObj.args.url, page, testinfo),
-                            this.internalTimeout, this
+                            10 * 1000, this
                         );
                         break;
                     case "clic_radio_e_controlla_stato":
@@ -104,7 +130,7 @@ class ActionExecutor {
 
     async atterraggioPagina(url, page, testinfo) {
         console.log('Raggiungo paggina -> ' + url)
-        await test.step("Atterraggio Pagina", async () => {
+        await this.test.step("Atterraggio Pagina", async () => {
             await page.goto(url);
 
             await this.takeScreenshot(page, testinfo, "Raggiungo paggina")
@@ -112,7 +138,7 @@ class ActionExecutor {
     }
 
     async click(page, testinfo, stepName, selector) {
-        await test.step(stepName, async () => {
+        await this.test.step(stepName, async () => {
 
             console.log("Eseguo click del selettore: " + selector)
             await page.locator(selector).click()
@@ -122,7 +148,7 @@ class ActionExecutor {
     }
 
     async clickAndCheckInputRadio(page, testinfo, stepName, inputRadioSelector) {
-        await test.step(stepName, async () => {
+        await this.test.step(stepName, async () => {
 
             console.log("Eseguo click del selettore: " + inputRadioSelector)
             await page.locator(inputRadioSelector).click()
@@ -137,9 +163,9 @@ class ActionExecutor {
     }
 
     async writeFill(page, testinfo, stepName, selector, text) {
-        await test.step(stepName, async () => {
+        await this.test.step(stepName, async () => {
 
-            console.log("Inserisco ['"+ text +"'] nel selettore: " + selector)
+            console.log("Inserisco ['" + text + "'] nel selettore: " + selector)
             await page.locator(selector).fill(text)
 
             await this.takeScreenshot(page, testinfo, stepName)
@@ -147,7 +173,7 @@ class ActionExecutor {
     }
 
     async controlla(page, testinfo, stepName, selector) {
-        await test.step(stepName, async () => {
+        await this.test.step(stepName, async () => {
 
             console.log("Controlle l'elemento con selettore: " + selector)
             await page.locator(selector).check()

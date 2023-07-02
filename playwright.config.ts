@@ -46,7 +46,10 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {},
+    {
+      name: 'ENOSIS_V_0_1_0',
+      use: { ...devices['Desktop Chrome'] },
+    },
 
     {
       name: 'firefox',

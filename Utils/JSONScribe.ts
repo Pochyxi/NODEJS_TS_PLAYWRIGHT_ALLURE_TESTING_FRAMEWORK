@@ -55,22 +55,52 @@ const fs = require('fs-extra');
 
 class JSONScribe {
 
+    internalPath;
     projectObject;
 
+
     constructor(path) {
-        this.projectObject = fs.readJSONSync(path);
+        this.internalPath = path;
+        this.projectObject = fs.readJSONSync(this.internalPath);
     }
 
     getProjectName() {
         return this.projectObject.info.name;
     }
 
-    getProjectVersion() {
-        return this.projectObject.info.version
-    }
-
     getAllCapTests(capName) {
         return this.projectObject.tests[capName];
+    }
+
+    getRunType() {
+        return this.projectObject.info.runType;
+    }
+
+    getRunName() {
+        return this.projectObject.info.runName;
+    }
+
+    findValueByKey(searchKey) {
+        const stack = [this.projectObject.tests]; // Utilizziamo una pila per mantenere traccia degli oggetti da esaminare
+
+        while (stack.length > 0) {
+            const currentObj = stack.pop(); // Prendi l'oggetto corrente dalla cima della pila
+
+            for (let key in currentObj) {
+                if (currentObj.hasOwnProperty(key)) {
+                    if (key === searchKey) {
+                        return currentObj[key]; // Restituisci il valore corrispondente alla chiave trovata
+                    }
+
+                    // Verifica se il valore corrente è un oggetto e lo aggiungi alla pila
+                    if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
+                        stack.push(currentObj[key]);
+                    }
+                }
+            }
+        }
+
+        return null; // Se la chiave non viene trovata, restituisci null
     }
 
 }
