@@ -7,21 +7,31 @@ class PDFReporter {
     private stepCount = 0
 
     constructor() {
-        this.doc = new PDFDocument();
+        this.doc = new PDFDocument({
+            margins: {
+                top: 20,
+                bottom: 20,
+                left: 12,
+                right: 12
+            }
+
+        });
         this.stepCount++
     }
 
     addHeader(testName, projectName, data, ora) {
+        this.doc.rect(0, 0, this.doc.page.width, this.doc.page.height).fill('#222222');
+        this.doc.fillColor('#D3D3D3');
 
         this.doc.fontSize(20);
         this.doc.font('Helvetica-Bold');
 
         this.doc.text(testName, { align: 'center' });
         this.doc.moveDown(2);
-        this.doc.fontSize(16);
-        this.doc.text("Progetto: " + projectName, { align: 'start' });
-        this.doc.text("Del: " + data, { align: 'start' });
-        this.doc.text("Ore: " + ora, { align: 'start' });
+        this.doc.fontSize(14);
+        this.doc.text("Progetto: " + projectName, { align: 'left' });
+        this.doc.text("Del: " + data, { align: 'left' });
+        this.doc.text("Ore: " + ora, { align: 'left' });
 
         this.doc.moveDown(5);
 
@@ -30,17 +40,20 @@ class PDFReporter {
     insertStepPDF(imagePath, stepName) {
         if (this.stepCount > 1) {
             this.doc.addPage();
+            this.doc.rect(0, 0, this.doc.page.width, this.doc.page.height).fill('#222222');
         }
+
+        this.doc.fillColor('#D3D3D3');
 
         const docWidth = this.doc.page.width;
         const image = this.doc.openImage(imagePath);
         const imageWidth = docWidth;
 
         this.doc.fontSize(14);
-        this.doc.fillColor('#000080');
 
-        this.doc.text("STEP |" + this.stepCount + "|", { align: 'center' });
-        this.doc.text(stepName, { align: 'start' });
+        this.doc.text("STEP | " + this.stepCount + " |", { align: 'left' });
+        this.doc.fontSize(12);
+        this.doc.text(stepName, { align: 'left' });
         this.doc.moveDown(1);
         this.doc.image(image, { width: imageWidth, x: 0 });
 
@@ -62,10 +75,14 @@ class PDFReporter {
 
         if (failed) {
             this.doc.moveDown(4);
-            this.doc.text("FAILED", { align: 'center' });
+            this.doc.fillColor("red")
+            this.doc.text("FAILED", { align: 'center' })
+            this.doc.fontSize(12);
+            this.doc.text(failed, { align: 'center' })
         } else {
             this.doc.moveDown(4);
-            this.doc.text("PASSED", { align: 'center' });
+            this.doc.fillColor("green")
+            this.doc.text("PASSED", { align: 'center' })
         }
 
 

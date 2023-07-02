@@ -11,22 +11,27 @@ const pageSelectors = {
 }
 
 class ActionExecutor {
-    private test;
-    private arrOfStepObj;
+    private readonly test;
+    private readonly arrOfStepObj;
     private pdfReporter;
     private pdfName;
     private resultTest
-    private waitTestFinish: boolean = true;
+    private readonly internalTimeout;
 
     constructor(test, arrOfStepObj) {
         this.test = test;
         this.arrOfStepObj = arrOfStepObj;
         this.pdfReporter = new PDFReporter();
         this.resultTest = true;
+        this.internalTimeout = 30 * 1000;
     }
 
 
     runTest(testName) {
+        // ******* SETTA LA GRANDEZZA SCHERMO
+        // this.test.use({
+        //     viewport: { width: 1600, height: 1200 },
+        // });
 
         this.test(testName, async ({page}, testinfo) => {
             this.pdfReporter.addHeader(
@@ -41,7 +46,7 @@ class ActionExecutor {
 
                 const timeoutPromise = new Promise((resolve, reject) => {
                     timeoutId = setTimeout(() => {
-                        is.pdfReporter.savePDF(is.pdfName, true)
+                        is.pdfReporter.savePDF(is.pdfName, "L'azione ha richiesto troppo tempo per essere eseguita (più di " + (timeout / 1000) + " secondi)")
                         reject(new Error("Timeout superato"));
                     }, timeout);
                 });
@@ -57,13 +62,35 @@ class ActionExecutor {
             for (const stepObj of this.arrOfStepObj) {
 
                 switch (stepObj.actionName) {
-                    case "goto":
-                        await this.atterraggioPagina(stepObj.args.url, page, testinfo)
+                    case "atterraggio_pagina":
+                        await withTimeout(
+                            await this.atterraggioPagina(stepObj.args.url, page, testinfo),
+                            this.internalTimeout, this
+                        );
                         break;
-                    case "click_radio_button_and_check":
+                    case "clic_radio_e_controlla_stato":
                         await withTimeout(
                             this.clickAndCheckInputRadio(page, testinfo, stepObj.stepName, stepObj.args.selector),
-                            10000, this
+                            this.internalTimeout, this
+                        );
+                        break;
+
+                    case "clicca":
+                        await withTimeout(
+                            this.click(page, testinfo, stepObj.stepName, stepObj.args.selector),
+                            this.internalTimeout, this
+                        );
+                        break;
+                    case "inserisci_testo":
+                        await withTimeout(
+                            this.writeFill(page, testinfo, stepObj.stepName, stepObj.args.selector, stepObj.args.text),
+                            this.internalTimeout, this
+                        );
+                        break;
+                    case "controlla":
+                        await withTimeout(
+                            this.controlla(page, testinfo, stepObj.stepName, stepObj.args.selector),
+                            this.internalTimeout, this
                         );
                         break;
                     default:
@@ -75,18 +102,22 @@ class ActionExecutor {
         })
     }
 
-    timeLimit() {
-        setTimeout(() => {
-            this.pdfReporter.savePDF(this.pdfName, true)
-        }, 30 * 1000)
-    }
-
     async atterraggioPagina(url, page, testinfo) {
         console.log('Raggiungo paggina -> ' + url)
         await test.step("Atterraggio Pagina", async () => {
             await page.goto(url);
 
             await this.takeScreenshot(page, testinfo, "Raggiungo paggina")
+        })
+    }
+
+    async click(page, testinfo, stepName, selector) {
+        await test.step(stepName, async () => {
+
+            console.log("Eseguo click del selettore: " + selector)
+            await page.locator(selector).click()
+
+            await this.takeScreenshot(page, testinfo, stepName)
         })
     }
 
@@ -100,6 +131,26 @@ class ActionExecutor {
             console.log("Il radio button è selezionato? " + boolInputRadio1Selector)
             expect(boolInputRadio1Selector).toBeTruthy()
 
+
+            await this.takeScreenshot(page, testinfo, stepName)
+        })
+    }
+
+    async writeFill(page, testinfo, stepName, selector, text) {
+        await test.step(stepName, async () => {
+
+            console.log("Inserisco ['"+ text +"'] nel selettore: " + selector)
+            await page.locator(selector).fill(text)
+
+            await this.takeScreenshot(page, testinfo, stepName)
+        })
+    }
+
+    async controlla(page, testinfo, stepName, selector) {
+        await test.step(stepName, async () => {
+
+            console.log("Controlle l'elemento con selettore: " + selector)
+            await page.locator(selector).check()
 
             await this.takeScreenshot(page, testinfo, stepName)
         })

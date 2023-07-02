@@ -34,21 +34,49 @@ const fs = require('fs-extra');
 // outputJsonSync(file, object[, options]): Versione sincrona di outputJson. Scrive un oggetto JavaScript come file JSON in modo sincrono, assicurandosi che la directory di destinazione esista.
 
 // Crea una cartella
-fs.ensureDirSync('json_configs');
+// fs.ensureDirSync('json_configs');
 
 // Creare un oggetto JSON
-const data = { name: 'John', age: 30 };
+// const data = { name: 'John', age: 30 };
 
 // Scrivere l'oggetto JSON su un file
-fs.writeJSONSync('json_configs/file.json', data);
+// fs.writeJSONSync('json_configs/file.json', data);
 
 // Leggere un file JSON
-const readData = fs.readJSONSync('file.json');
-console.log(readData); // { name: 'John', age: 30 }
+// const readData = fs.readJSONSync('file.json');
+// console.log(readData); // { name: 'John', age: 30 }
 
 // Modificare il contenuto del file JSON
-readData.age = 31;
-fs.writeJSONSync('file.json', readData);
+// readData.age = 31;
+// fs.writeJSONSync('file.json', readData);
 
 // Eliminare un file JSON
 // fs.removeSync('file.json');
+
+class JSONScribe {
+
+    projectObject;
+
+    constructor(path) {
+        this.projectObject = fs.readJSONSync(path);
+    }
+
+    getProjectName() {
+        return this.projectObject.info.name;
+    }
+
+    getProjectVersion() {
+        return this.projectObject.info.version
+    }
+
+    getAllCapTests(capName) {
+        return this.projectObject.tests[capName];
+    }
+
+}
+
+// const enosisOBJ = new JSONScribe("../test-suites/ENOSIS.json")
+
+module.exports = {
+    JSONScribe: JSONScribe
+}
