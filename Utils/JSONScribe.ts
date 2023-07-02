@@ -105,7 +105,7 @@ class JSONScribe {
 
 }
 
-// const enosisOBJ = new JSONScribe("../test-suites/ENOSIS.json")
+// const enosisOBJ = new JSONScribe("../test-suites/ENOSIS_V_0_1_0.json")
 
 module.exports = {
     JSONScribe: JSONScribe
