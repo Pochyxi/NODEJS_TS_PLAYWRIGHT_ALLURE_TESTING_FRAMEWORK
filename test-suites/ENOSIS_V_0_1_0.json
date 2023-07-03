@@ -1,14 +1,14 @@
 {
   "info": {
     "name": "ENOSIS_V_0_1_0",
-    "runType": "cap",
-    "runName": "login"
+    "runType": "test",
+    "runName": "3_login"
   },
   "tests": {
     "login": {
       "3_login": {
         "description": "Una descrizione qualunque",
-        "preRequisite": "Un pre requisiti qualunque",
+        "preRequisite": "Un pre requisito qualunque",
         "testStep": [
           {
             "stepName": "Atterraggio Pagina",

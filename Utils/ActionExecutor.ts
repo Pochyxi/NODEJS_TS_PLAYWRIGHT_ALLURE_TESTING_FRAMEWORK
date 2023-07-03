@@ -129,11 +129,11 @@ class ActionExecutor {
     }
 
     async atterraggioPagina(url, page, testinfo) {
-        console.log('Raggiungo paggina -> ' + url)
+        console.log('Raggiungo pagina -> ' + url)
         await this.test.step("Atterraggio Pagina", async () => {
             await page.goto(url);
 
-            await this.takeScreenshot(page, testinfo, "Raggiungo paggina")
+            await this.takeScreenshot(page, testinfo, "Raggiungo pagina")
         })
     }
 

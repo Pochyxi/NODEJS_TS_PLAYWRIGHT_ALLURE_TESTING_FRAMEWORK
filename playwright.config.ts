@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+const {JSONScribe} = require("./Utils/JSONScribe.ts")
 
 /**
  * Read environment variables from file.
@@ -9,6 +10,55 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+class ProjectAgent {
+  private jsonScribe;
+  private projectArchive = [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'ENOSIS_V_0_1_0',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    }
+  ]
+  private elaborateProjectArchive = []
+
+  constructor(path) {
+    this.jsonScribe = new JSONScribe(path)
+    console.log("JSON letto correttamente")
+    console.log(this.jsonScribe.getOBJ)
+  }
+
+  setProjectStructure() {
+    for (let stringProject of this.jsonScribe.getOBJ().projects) {
+      let finded = this.projectArchive.find(e => e.name === stringProject)
+
+      if (finded != undefined) this.elaborateProjectArchive.push(finded)
+    }
+
+    console.log("Ecco il progetto elaborato -> ")
+    console.log(this.elaborateProjectArchive)
+
+    return this.elaborateProjectArchive
+  }
+
+}
+
+const projectArr = new ProjectAgent("./json_configs/pw_config.json").setProjectStructure()
+
 export default defineConfig({
   testDir: './tests',
   timeout: 5 * 60 * 1000,
@@ -40,48 +90,7 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'ENOSIS_V_0_1_0',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-      // retries: 3
-    },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ..devices['Desktop Chrome'], channel: 'chrome' },
-    // },
-  ],
+  projects: projectArr
 
   /* Run your local dev server before starting the tests */
   // webServer: {

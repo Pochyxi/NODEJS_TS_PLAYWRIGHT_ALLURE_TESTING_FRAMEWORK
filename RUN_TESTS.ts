@@ -11,4 +11,6 @@ const {executeTest} = require('./Utils/TestAndReport.ts')
 executeTest(
     {
         project: "ENOSIS_V_0_1_0",
+        show: true,
+        showDashboard: true
     })

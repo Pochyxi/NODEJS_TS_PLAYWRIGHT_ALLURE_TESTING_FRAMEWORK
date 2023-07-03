@@ -64,6 +64,10 @@ class JSONScribe {
         this.projectObject = fs.readJSONSync(this.internalPath);
     }
 
+    getOBJ() {
+        return this.projectObject
+    }
+
     getProjectName() {
         return this.projectObject.info.name;
     }
