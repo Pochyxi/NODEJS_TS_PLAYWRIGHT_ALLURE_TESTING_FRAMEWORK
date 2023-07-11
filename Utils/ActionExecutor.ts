@@ -50,6 +50,9 @@ class ActionExecutor {
         this.test(testName, async ({page}, testinfo) => {
             this.pdfReporter.addHeader(
                 testinfo.title,
+                // todo: Siccome voglio dare la possibilità di esecuzione multiprogetto in parallelo,
+                //  ho bisogno di specificare qui un idice che peschi il corretto project.name
+                //  dato che diventerà un array di stringhe contenente i progetti da lanciare
                 testinfo.project.name,
                 this.getActualDateStringObj().day + "/" + this.getActualDateStringObj().month + "/" + this.getActualDateStringObj().year,
                 this.getActualDateStringObj().hours + ":" + this.getActualDateStringObj().minutes

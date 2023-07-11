@@ -92,9 +92,9 @@ class PDFReporter {
 
         this.doc.fontSize(14);
 
-        this.doc.text("STEP | " + this.stepCount + " |", {align: 'left'});
-        this.doc.fontSize(12);
-        this.doc.fillColor('#B7B7B7');
+        this.doc.text("STEP - " + this.stepCount, {align: 'left'});
+        this.doc.fontSize(10);
+        this.doc.fillColor('#8FBC8F');
         this.doc.text(stepName, {align: 'left'});
         this.doc.moveDown(1);
         this.doc.image(image, {width: imageWidth, x: 0});
@@ -105,8 +105,10 @@ class PDFReporter {
     }
 
     async savePDF(filename, failed) {
-        const pdfFolderPath = path.join(__dirname, '../PDFReports');
-        const imgFolderPath = path.join(pdfFolderPath, 'img'); // Path per la cartella img
+        const [name, project, date, time] = filename.split('__');
+        const [year, month, day] = date.split('_');
+        const pdfFolderPath = path.join(__dirname, '../PDFReports/' + project);
+        const imgFolderPath = path.join(__dirname, '../PDFReports/', 'img'); // Path per la cartella img
         const filePath = path.join(pdfFolderPath, `${filename}__${failed ? "FAILED" : "PASSED"}.pdf`);
 
 
@@ -137,8 +139,6 @@ class PDFReporter {
         });
 
         // Sposta il file PDF nella cartella di destinazione
-        const [name, project, date, time] = filename.split('__');
-        const [year, month, day] = date.split('_');
         const targetFolderPath = path.join(pdfFolderPath, name + "__" + project, year, month, day);
         const targetFilePath = path.join(targetFolderPath, `${filename}__${failed ? "FAILED" : "PASSED"}.pdf`);
 

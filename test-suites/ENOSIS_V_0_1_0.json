@@ -1,6 +1,7 @@
 {
   "info": {
     "name": "ENOSIS_V_0_1_0",
+    "browsers": ["chrome", "firefox", "safari"],
     "runType": "test",
     "runName": "3_login"
   },
@@ -51,6 +52,13 @@
             "actionName": "clicca",
             "args": {
               "selector": "#checkBoxOption2"
+            }
+          },
+          {
+            "stepName": "Esempio di clic fatto a scopo illustrativo sulla pagina",
+            "actionName": "clicca",
+            "args": {
+              "selector": "#opentab"
             }
           }
         ]

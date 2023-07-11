@@ -1,0 +1,70 @@
+{
+  "info": {
+    "name": "PochyxiGitHub",
+    "browsers": [
+      "chrome"
+    ],
+    "runType": "test",
+    "runName": "Ricerca_soggetto"
+  },
+  "tests": {
+    "Ricerca": {
+      "Ricerca_soggetto": {
+        "description": "Il test si concentrerà sulla ricerca e la visualizzazione dei progetti contenuti nel profilo di Pochyxi, cioè il mio account GitHub",
+        "preRequisite": "Il prerequisito non è altro che una condizione che deve verificarsi prima che abbia inizio il test",
+        "testStep": [
+          {
+            "stepName": "Atterraggio pagina principale di google dove andremo a ricercare GitHub",
+            "actionName": "atterraggio_pagina",
+            "args": {
+              "url": "https://www.google.it"
+            }
+          },
+          {
+            "stepName": "Clic bottone Accetta tutto",
+            "actionName": "clicca",
+            "args": {
+              "selector": "#L2AGLb > div"
+            }
+          },
+          {
+            "stepName": "Inserite il nome GitHub nell'input-box",
+            "actionName": "inserisci_testo",
+            "args": {
+              "selector": "#APjFqb",
+              "text": "GitHub"
+            }
+          },
+          {
+            "stepName": "Click, img di google per far scomparire il menu a tendina dei risultati e permetterci di fare click sul tasto di ricerca",
+            "actionName": "clicca",
+            "args": {
+              "selector": "body > div.L3eUgb > div.o3j99.LLD4me.yr19Zb.LS8OJ > div > img"
+            }
+          },
+          {
+            "stepName": "Click, tasto Cerca con Google",
+            "actionName": "clicca",
+            "args": {
+              "selector": "body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nth-child(1) > div.A8SBwf > div.FPdoLc.lJ9FBc > center > input.gNO89b"
+            }
+          },
+          {
+            "stepName": "Clic link GitHub",
+            "actionName": "clicca",
+            "args": {
+              "selector": "#rso > div:nth-child(1) > div > div > div:nth-child(1) > div > div > div.P8ujBc.v5yQqb.jqWpsc > a > div.y0NFKc > div.oewGkc.LeUQr.MUxGbd.v0nnCb > div"
+            }
+          },
+          {
+            "stepName": "Verificare il corretto atterraggio sulla Home page di GitHub",
+            "actionName": "controlla",
+            "args": {
+              "selector": "body > div.logged-out.env-production.page-responsive.header-overlay.home-campaign > div.position-relative.js-header-wrapper > header > div > div.d-flex.flex-justify-between.flex-items-center.width-full.width-lg-auto > a > svg"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

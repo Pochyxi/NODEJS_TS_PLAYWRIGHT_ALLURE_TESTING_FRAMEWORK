@@ -2,20 +2,17 @@ const path = require('path');
 const fs = require('fs');
 const {resolve} = require("path");
 const {exec} = require("child_process");
-const {JSONScribe} = require("../Utils/JSONScribe.ts")
-
 /**
  * @param params
  */
 function executeTest(params) {
     let checkedShow = params?.show ? params.show : false
-    let projectName = params?.project ? " --project=" + params.project : ""
     let showDashboard = params?.showDashboard ? params.showDashboard : false
 
 
-    let conditionalTestName = checkedShow ? params.project + " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
+    let conditionalTestName = checkedShow ? " --reporter=allure-playwright,line,./my-awesome-reporter.ts" + " --headed" : " --reporter=allure-playwright,line,./my-awesome-reporter.ts "
 
-    executeTestReportDashboard("test " + conditionalTestName + projectName, showDashboard)
+    executeTestReportDashboard("test " + conditionalTestName, showDashboard)
 }
 
 /*** Esegue un comando specificato come parametro e gestisce gli output e gli errori.
@@ -112,14 +109,11 @@ function executeAllureReport(showDashboard) {
 
 
 /*** Copia e rinomina le tracce di test in una cartella specificata.
- * @param {string} baseDestinationFolder - La cartella di destinazione base in cui copiare e rinominare le tracce.
- * @param {string} testOriginPath - Il percorso delle tracce di test originali.
  */
 function copyAndRenameTrace() {
     let baseDestinationFolder = "./TracesReports";
     const testOriginPath = "./test-results";
     let arrOfTraceNames = getSubfolderNames(testOriginPath);
-    let arrOfTracesToOpen = [];
 
     for (const originalPath of arrOfTraceNames) {
         const currentDate = new Date();
@@ -142,6 +136,7 @@ function copyAndRenameTrace() {
         const time = formattedDate[2].split(",")[1].trim().replaceAll(':', '-');
         const destinationFolder = path.join(baseDestinationFolder, originalPath);
         const datePath = path.join(destinationFolder, year, month, day);
+
         if (!fs.existsSync(datePath)) {
             fs.mkdirSync(datePath, {recursive: true});
         }
@@ -160,7 +155,6 @@ function copyAndRenameTrace() {
             if (['.zip', '.png', '.webm'].includes(extension)) {
                 const newFile = path.join(newPath, path.basename(file));
                 const oldFile = path.join("./test-results", originalPath, file);
-                arrOfTracesToOpen.push(newFile);
 
                 fs.copyFile(oldFile, newFile, (error) => {
                     if (error) {
