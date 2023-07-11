@@ -20,7 +20,6 @@ class ActionExecutor {
         this.resultTest = true;
         this.internalTimeout = 30 * 1000;
 
-        // this.runTests("login")
     }
 
     runTests() {

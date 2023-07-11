@@ -55,8 +55,8 @@ const fs = require('fs-extra');
 
 class JSONScribe {
 
-    internalPath;
-    projectObject;
+    private readonly internalPath;
+    private readonly projectObject;
 
 
     constructor(path) {
@@ -109,7 +109,6 @@ class JSONScribe {
 
 }
 
-// const enosisOBJ = new JSONScribe("../test-suites/ENOSIS_V_0_1_0.json")
 
 module.exports = {
     JSONScribe: JSONScribe

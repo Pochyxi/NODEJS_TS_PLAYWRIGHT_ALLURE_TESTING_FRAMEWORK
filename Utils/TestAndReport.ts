@@ -115,6 +115,19 @@ function copyAndRenameTrace() {
     const testOriginPath = "./test-results";
     let arrOfTraceNames = getSubfolderNames(testOriginPath);
 
+    // Crea la cartella di origine se non esiste
+    if (!fs.existsSync(testOriginPath)) {
+        try {
+            // Crea la cartella
+            fs.mkdirSync(testOriginPath);
+            console.log('La cartella è stata creata con successo.');
+        } catch (error) {
+            console.error('Si è verificato un errore durante la creazione della cartella:', error);
+        }
+    } else {
+        console.log('La cartella esiste già.');
+    }
+
     for (const originalPath of arrOfTraceNames) {
         const currentDate = new Date();
         const options = {
