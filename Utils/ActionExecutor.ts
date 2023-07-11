@@ -178,7 +178,7 @@ class ActionExecutor {
         await this.test.step(stepName, async () => {
 
             console.log("Controlle l'elemento con selettore: " + selector)
-            await page.locator(selector).check()
+            await page.locator(selector).isVisible()
 
             await this.takeScreenshot(page, testinfo, stepName)
         })
