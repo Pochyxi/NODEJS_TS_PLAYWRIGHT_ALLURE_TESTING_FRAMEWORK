@@ -5,6 +5,7 @@ const path = require('path');
 class PDFReporter {
     private doc;
     private stepCount = 0
+    private stepCheckBG = true
 
     constructor() {
         this.doc = new PDFDocument({
@@ -13,14 +14,21 @@ class PDFReporter {
                 bottom: 20,
                 left: 12,
                 right: 12
-            }
+            },
+            bufferPages: true
 
         });
         this.stepCount++
     }
 
+    getCurrentPage() {
+        return this.doc._pageBuffer.length;
+    }
+
     addHeader(testName, projectName, data, ora) {
+        // Imposta il background della pagina
         this.doc.rect(0, 0, this.doc.page.width, this.doc.page.height).fill('#222222');
+
         this.doc.fillColor('#D3D3D3');
 
         this.doc.fontSize(20);
@@ -70,7 +78,14 @@ class PDFReporter {
 
         this.doc.fontSize(12);
         this.doc.fillColor('#B7B7B7');
+
         for (let stringStep of ArrOfSteps) {
+            if (this.getCurrentPage() > 1 && this.stepCheckBG === true) {
+                this.doc.rect(0, 0, this.doc.page.width, this.doc.page.height).fill('#222222');
+                this.stepCheckBG = false
+                this.doc.fillColor('#B7B7B7');
+            }
+
             this.doc.text(stringStep, {align: 'center'})
             this.doc.moveDown(1);
         }
