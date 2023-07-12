@@ -1,4 +1,4 @@
-# PLAYWRIGHT DEVELOPEZ FREAMEWORK
+# PLAYWRIGHT DEVELOPEZ FRAMEWORK
 
 L'unico pre-requisito per utilizzare questo framework è avere installato [Node.js](https://nodejs.org/it/).
 
