@@ -58,3 +58,4 @@ Dopo l'esecuzione dei test, verrà generata una cartella chiamata 'TracesReport'
 ### Esegui `node RUN_TRACE`
 Per aprire il programma di visualizzazione tracce, molto utile da utilizzare ad esempio nel caso in cui volessimo rivedere una vecchia tracce presente nella cartella di backup o una presente all'interno della dashboard di Allure
 
+# GRAZIE
