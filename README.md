@@ -6,7 +6,7 @@ L'unico pre-requisito per utilizzare questo framework è avere installato [Node.
 
 1. Clona il repository
 2. Esegui `npm install` per installare le dipendenze
-3. Esegui `node RUN_TESTS` per avviare l'applicazione con il test DEMO
+3. Esegui `node RUN_TESTS.ts` per avviare l'applicazione con il test DEMO
 
 ## Funzionalità
 
@@ -46,7 +46,7 @@ args: selector
 
 Queste sono le azioni attualmente disponibili, ovviamente il progetto è costruito per ospitarne tantissime altre che si potranno sviluppare in futuro
 
-### Esegui `node RUN_ALLURE_REPORT`
+### Esegui `node RUN_ALLURE_REPORT.ts`
 Per generare il report di allure ed in seguito aprire la dashboard ed il programma di visualizzazione tracce
 
 ### Generazione di reportistica in formato PDF
@@ -55,7 +55,7 @@ Dopo l'esecuzione dei test, verrà generata una cartella chiamata 'PDFReports' i
 ### Generazione di una cartella di backup per i file trace
 Dopo l'esecuzione dei test, verrà generata una cartella chiamata 'TracesReport' in cui saranno contenuti tutti i file trace generati dai test
 
-### Esegui `node RUN_TRACE`
+### Esegui `node RUN_TRACE.ts`
 Per aprire il programma di visualizzazione tracce, molto utile da utilizzare ad esempio nel caso in cui volessimo rivedere una vecchia tracce presente nella cartella di backup o una presente all'interno della dashboard di Allure
 
 # GRAZIE
