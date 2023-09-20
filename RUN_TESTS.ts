@@ -10,5 +10,5 @@ const {executeTest} = require('./Utils/TestAndReport.ts')
 executeTest(
     {
         show: true,
-        showDashboard: false
+        showDashboard: true
     })

@@ -35,8 +35,8 @@ class ProjectAgent {
                 case "chrome":
                     this.projectObject.push({
                         name: projectName + "--" + name,
-                        use: {...devices['Desktop Chrome']}
-                    })
+                        use: {...devices['Desktop Chrome'],
+                    }})
                     break
                 case "firefox":
                     this.projectObject.push({

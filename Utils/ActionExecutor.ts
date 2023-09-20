@@ -43,7 +43,7 @@ class ActionExecutor {
     runTest(testName) {
         // ******* SETTA LA GRANDEZZA SCHERMO
         // this.test.use({
-        //     viewport: { width: 1600, height: 1200 },
+        //     viewport: { width: 1920, height: 1080 },
         // });
 
         this.test(testName, async ({page}, testinfo) => {
@@ -133,6 +133,7 @@ class ActionExecutor {
     async atterraggioPagina(url, page, testinfo) {
         console.log('Raggiungo pagina -> ' + url)
         await this.test.step("Atterraggio Pagina", async () => {
+
             await page.goto(url);
 
             await this.takeScreenshot(page, testinfo, "Raggiungo pagina")

@@ -32,7 +32,7 @@
             "actionName": "inserisci_testo",
             "args": {
               "selector": "#APjFqb",
-              "text": "GitHub pochyxi"
+              "text": "GitHub"
             }
           },
           {
@@ -53,7 +53,7 @@
             "stepName": "Clic link GitHub",
             "actionName": "clicca",
             "args": {
-              "selector": "#rso > div:nth-child(2) > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3"
+              "selector": "h3:has-text(\"GitHub: Let's build from here · GitHub\")"
             }
           },
           {
@@ -96,7 +96,7 @@
             "stepName": "Click su Users",
             "actionName": "clicca",
             "args": {
-              "selector": "body > div.logged-out.env-production.page-responsive > div.application-main > main > react-app > div > div > div > div.Box-sc-g0xbh4-0.emundt > div > div > div > div.Box-sc-g0xbh4-0.gNdDUH > div > div > div > div > ul > li.Box-sc-g0xbh4-0.eFVkMx > ul > li:nth-child(6) > a"
+              "selector": "span:has-text(\"Users\")"
             }
           },
           {
