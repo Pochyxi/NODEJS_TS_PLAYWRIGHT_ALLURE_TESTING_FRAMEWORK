@@ -1,5 +1,3 @@
-Certo! Ecco una versione migliorata del tuo README:
-
 # PLAYWRIGHT ADI FRAMEWORK
 
 Questo framework di automazione dei test è progettato per semplificare l'esecuzione di test utilizzando [Playwright](https://playwright.dev/). L'unico prerequisito per utilizzare questo framework è avere installato [Node.js](https://nodejs.org/it/).
