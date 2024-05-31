@@ -1,4 +1,5 @@
 const {executeTest} = require('./Utils/TestAndReport.ts')
+const {mostraEsecuzione, mostraDashboard} = require('./CONFIG.ts')
 
 /**
  * Esegue tutti i test o un singolo test all'interno dei file .spec.js situati nella cartella /tests
@@ -9,6 +10,6 @@ const {executeTest} = require('./Utils/TestAndReport.ts')
 
 executeTest(
     {
-        show: true,
-        showDashboard: true
+        show: mostraEsecuzione,
+        showDashboard: mostraDashboard
     })

@@ -48,7 +48,9 @@ args: selector
 
 Queste sono le azioni attualmente disponibili, ovviamente il progetto è costruito per ospitarne tantissime altre che si potranno sviluppare in futuro
 
-### Nel file `CONFIG_NAME.ts` è possibile specificare il nome del progetto da eseguire tra quelli presenti nella cartella `/test-suites`
+### Nel file `CONFIG.ts` è possibile specificare il nome del progetto da eseguire tra quelli presenti nella cartella `/test-suites`
+e anche possibile decidere su eseguire i test in modalità headless o no
+e decidere se aprire la dashborad allure a fine test o no
 
 ### Esegui `node RUN_ALLURE_REPORT.ts`
 Per generare il report di allure ed in seguito aprire la dashboard ed il programma di visualizzazione tracce
