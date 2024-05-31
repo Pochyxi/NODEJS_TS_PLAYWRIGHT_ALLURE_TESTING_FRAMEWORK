@@ -17,6 +17,9 @@ Nel file `CONFIG.ts` è possibile specificare diverse opzioni di configurazione:
 - `nomeProgetto`: Il nome del progetto da eseguire tra quelli presenti nella cartella `/test-suites`
 - `mostraEsecuzione`: Decidere se eseguire i test in modalità headless o meno
 - `mostraDashboard`: Decidere se aprire la dashboard di Allure alla fine dei test
+- `altezzaFinestraInPixels`: Altezza della finestra del browser
+- `larghezzaFinestraInPixels`: Larghezza della finestra del browser
+- `attesaPrimaDelFallimentoInSecondi`: Tempo di attesa prima di considerare un test fallito
 
 ## Struttura dei test
 
@@ -53,66 +56,66 @@ Il framework supporta le seguenti azioni predefinite:
 
 ### Il framework supporta diversi tipi di selettori per individuare gli elementi nella pagina:
 
-- Selettore CSS: Utilizza un selettore CSS standard
-- Selettore di testo: Utilizza il prefisso `text=` seguito dal testo esatto dell'elemento
-- Selettore di testo parziale: Utilizza il prefisso `has-text=` seguito da una parte del testo dell'elemento
-- Selettore XPath: Utilizza il prefisso `xpath=` seguito da un'espressione XPath
-- Selettore di attributo: Utilizza il formato `[attribute=value]`
-- Selettore di visibilità: Utilizza il suffisso `:visible`
-- Selettore di contenimento: Utilizza il suffisso `:has(selector)`
-- Selettore di corrispondenza multipla: Utilizza il selettore `:is(selector1, selector2, ...)`
+- `Selettore CSS`: Utilizza un selettore CSS standard
+- `Selettore di testo`: Utilizza il prefisso `text=` seguito dal testo esatto dell'elemento
+- `Selettore di testo` parziale: Utilizza il prefisso `has-text=` seguito da una parte del testo dell'elemento
+- `Selettore XPath`: Utilizza il prefisso `xpath=` seguito da un'espressione XPath
+- `Selettore di attributo`: Utilizza il formato `[attribute=value]`
+- `Selettore di visibilità`: Utilizza il suffisso `:visible`
+- `Selettore di contenimento`: Utilizza il suffisso `:has(selector)`
+- `Selettore di corrispondenza multipla`: Utilizza il selettore `:is(selector1, selector2, ...)`
 
 ### Ecco un elenco completo dei selettori CSS disponibili in Playwright, inclusi i selettori specifici di Playwright come has-text:
 
 ### Selettori CSS standard:
 
-Selettore di tag: tagname
-Selettore di classe: .classname
-Selettore di ID: #idname
-Selettore di attributo: [attribute=value]
-Selettore di discendente: ancestor descendant
-Selettore di figlio diretto: parent > child
-Selettore di fratello adiacente: element + sibling
-Selettore di fratello generale: element ~ sibling
-Pseudo-classi: :hover, :focus, :active, :visited, :nth-child(n), :nth-of-type(n), :first-child, :last-child, :empty, :checked, :disabled, :enabled, :not(selector), ecc.
-Pseudo-elementi: ::before, ::after, ::first-letter, ::first-line, ::selection, ecc.
+- `Selettore di tag`: tagname
+- `Selettore di classe`: .classname
+- `Selettore di ID`: #idname
+- `Selettore di attributo`: [attribute=value]
+- `Selettore di discendente`: ancestor descendant
+- `Selettore di figlio diretto`: parent > child
+- `Selettore di fratello adiacente`: element + sibling
+- `Selettore di fratello generale`: element ~ sibling
+- `Pseudo-classi`: :hover, :focus, :active, :visited, :nth-child(n), :nth-of-type(n), :first-child, :last-child, :empty, :checked, :disabled, :enabled, :not(selector), ecc.
+- `Pseudo-elementi`: ::before, ::after, ::first-letter, ::first-line, ::selection, ecc.
 
 
 ### Selettori specifici di Playwright:
 
 #### text=: Seleziona un elemento che contiene esattamente il testo specificato.
 
-'text=Invia modulo'
+`'text=Invia modulo'`
 
 
 #### has-text=: Seleziona un elemento che contiene il testo specificato.
 
-'button:has-text("Invia")'
+`'button:has-text("Invia")'`
 
 
 #### xpath=: Seleziona un elemento utilizzando un'espressione XPath.
 
-'xpath=//button[contains(text(), "Invia")]'
+`'xpath=//button[contains(text(), "Invia")]'`
 
 
 #### css=: Seleziona un elemento utilizzando un selettore CSS (opzionale, poiché i selettori CSS sono il comportamento predefinito).
 
-'css=button.submit-button'
+`'css=button.submit-button'`
 
 
 #### :visible: Seleziona un elemento che è visibile sulla pagina.
 
-'button:visible'
+`'button:visible'`
 
 
 #### :has(selector): Seleziona un elemento che contiene un discendente corrispondente al selettore specificato.
 
-'div:has(button.submit-button)'
+`'div:has(button.submit-button)'`
 
 
 #### :is(selector1, selector2, ...): Seleziona un elemento che corrisponde a uno dei selettori specificati.
 
-':is(button, a)[href="/submit"]'
+`':is(button, a)[href="/submit"]'`
 
 ### Generazione di report
 

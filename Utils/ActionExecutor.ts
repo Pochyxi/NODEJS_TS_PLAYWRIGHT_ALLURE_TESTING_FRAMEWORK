@@ -1,25 +1,29 @@
 import {expect} from "@playwright/test";
 import * as fs from "node:fs";
-
 const {JSONScribe} = require("./JSONScribe.ts")
 const path = require('path');
 const {PDFReporter} = require('./PDFReporter.ts')
 
+
 class ActionExecutor {
     private readonly test;
     private readonly projectObj;
+    private readonly width;
+    private readonly height;
     private arrOfStepObj;
     private pdfReporter;
     private pdfName;
     private resultTest
     private readonly internalTimeout;
 
-    constructor(test, projectObjPath) {
+    constructor(test, projectObjPath, width, height, internalTimeout) {
         this.test = test;
         this.projectObj = new JSONScribe(projectObjPath);
         this.pdfReporter = new PDFReporter();
         this.resultTest = true;
-        this.internalTimeout = 30 * 1000;
+        this.width = width;
+        this.height = height;
+        this.internalTimeout = internalTimeout * 1000;
 
     }
 
@@ -43,9 +47,9 @@ class ActionExecutor {
 
     runTest(testName) {
         // ******* SETTA LA GRANDEZZA SCHERMO
-        // this.test.use({
-        //     viewport: { width: 1920, height: 1080 },
-        // });
+        this.test.use({
+            viewport: { width: this.width, height: this.height },
+        });
 
         this.test(testName, async ({page}, testinfo) => {
             this.pdfReporter.addHeader(
@@ -87,21 +91,20 @@ class ActionExecutor {
                 }
             }
 
-
             for (const stepObj of this.arrOfStepObj) {
 
                 switch (stepObj.actionName) {
                     case "settaggio_storage":
                         await withTimeout(
                             await this.initializeStorage(page, stepObj.args.storageType, stepObj.args.storageConfigName),
-                            10 * 1000, this
+                            this.internalTimeout, this
                         );
                         break;
 
                     case "atterraggio_pagina":
                         await withTimeout(
                             await this.atterraggioPagina(stepObj.args.url, page, testinfo),
-                            10 * 1000, this
+                            this.internalTimeout, this
                         );
 
                         //SETTAGGIO DELLO STORAGE
