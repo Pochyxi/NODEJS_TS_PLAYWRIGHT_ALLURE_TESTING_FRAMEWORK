@@ -21,6 +21,14 @@
             }
           },
           {
+            "actionName": "settaggio_storage",
+            "stepName": "Settaggio dello storage per la sessione",
+            "args": {
+              "storageType": "local",
+              "storageConfigName": "session-storage-state"
+            }
+          },
+          {
             "stepName": "Clic bottone Accetta tutto",
             "actionName": "clicca",
             "args": {

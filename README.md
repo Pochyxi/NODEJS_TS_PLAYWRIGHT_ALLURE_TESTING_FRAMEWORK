@@ -6,7 +6,7 @@ L'unico pre-requisito per utilizzare questo framework è avere installato [Node.
 
 1. Clona il repository
 2. Esegui `npm install` per installare le dipendenze
-3. Esegui `node RUN_TESTS.ts` per avviare l'applicazione con il test DEMO
+3. Esegui `node START.ts` per avviare l'applicazione con il test DEMO
 
 ## Funzionalità
 
@@ -14,8 +14,6 @@ L'unico pre-requisito per utilizzare questo framework è avere installato [Node.
 
 Per inizializzare un progetto abbiamo innanzitutto bisogno di un file json situato nella cartella
 `/test-suites` che conterrà le informazioni necessarie per l'esecuzione dei test. E' importante per convenzione che il file si chiami allo stesso modo in cui si chiama la proprietà 'name' all'interno di 'info'
-
-![Screenshot 2023-07-12 alle 01.04.43.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F0j%2Fs_0ld8095rgg0s3zzl8w_rwr0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_uNMhXu%2FScreenshot%202023-07-12%20alle%2001.04.43.png)
 
 info: Contiene le informazioni generali per l'esecuzione dei test, come il nome del progetto, i browser da utilizzare, il tipo di esecuzione e il nome dell'esecuzione.
 Nel caso si specifichino due o più browsers, i test verranno eseguiti su entrambi i browser specificati e in parallelo.
@@ -32,6 +30,10 @@ Alcuni testStep includono anche una breve descrizione (description) dell'azione 
 
 ### Lista delle azioni attualmente disponibili
 
+'settaggio_storage': setta un valore nello storage del browser(local e session)
+args: storageConfigName(nome del file json contenente i valori da settare),
+storageType(local o session)
+
 'atterraggio_pagina' : atterra sulla pagina specificata
 args: url
 
@@ -45,6 +47,8 @@ args: selector, text
 args: selector
 
 Queste sono le azioni attualmente disponibili, ovviamente il progetto è costruito per ospitarne tantissime altre che si potranno sviluppare in futuro
+
+### Nel file `CONFIG_NAME.ts` è possibile specificare il nome del progetto da eseguire tra quelli presenti nella cartella `/test-suites`
 
 ### Esegui `node RUN_ALLURE_REPORT.ts`
 Per generare il report di allure ed in seguito aprire la dashboard ed il programma di visualizzazione tracce

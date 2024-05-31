@@ -1,4 +1,5 @@
 import {expect} from "@playwright/test";
+import * as fs from "node:fs";
 
 const {JSONScribe} = require("./JSONScribe.ts")
 const path = require('path');
@@ -90,11 +91,24 @@ class ActionExecutor {
             for (const stepObj of this.arrOfStepObj) {
 
                 switch (stepObj.actionName) {
+                    case "settaggio_storage":
+                        await withTimeout(
+                            await this.initializeStorage(page, stepObj.args.storageType, stepObj.args.storageConfigName),
+                            10 * 1000, this
+                        );
+                        break;
+
                     case "atterraggio_pagina":
                         await withTimeout(
                             await this.atterraggioPagina(stepObj.args.url, page, testinfo),
                             10 * 1000, this
                         );
+
+                        //SETTAGGIO DELLO STORAGE
+                        // await withTimeout(
+                        //     await this.initializeStorage(page, 'local'),
+                        //     10 * 1000, this
+                        // );
                         break;
                     case "clic_radio_e_controlla_stato":
                         await withTimeout(
@@ -128,6 +142,47 @@ class ActionExecutor {
 
             this.pdfReporter.savePDF(this.pdfName, false)
         })
+    }
+
+    async initializeStorage(page, storageType, storageConfigName) {
+        console.log('INIZIALIZZO ' + storageType.toUpperCase() + 'STORAGE')
+
+        // Leggi il contenuto del file di configurazione
+        const storageState = JSON.parse(fs.readFileSync('storageConfig/'+ storageConfigName + '.json', 'utf-8'));
+
+        // Imposta gli oggetti nella sessione di storage
+        await page.evaluate(({ storageState, storageType }) => {
+            for (const [key, value] of Object.entries(storageState)) {
+                if (storageType === 'local') {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } else {
+                    sessionStorage.setItem(key, JSON.stringify(value));
+                }
+            }
+        }, { storageState, storageType });
+
+        // Ottieni il contenuto dello storage della sessione
+        const sessionStorageData = await page.evaluate((storageType) => {
+            const data = {};
+
+            if (storageType === 'local') {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    data[key] = localStorage.getItem(key);
+                }
+            } else {
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    data[key] = sessionStorage.getItem(key);
+                }
+            }
+
+            return data;
+        }, storageType);
+
+        // Stampa il contenuto dello storage nella console di Node.js
+        console.log('CONTENUTO ' + storageType.toUpperCase() + 'STORAGE DOPO INIZIALIZZAZIONE:');
+        console.log(sessionStorageData);
     }
 
     async atterraggioPagina(url, page, testinfo) {
