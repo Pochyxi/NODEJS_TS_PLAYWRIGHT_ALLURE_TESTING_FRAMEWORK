@@ -1,5 +1,5 @@
 import {defineConfig, devices} from '@playwright/test';
-
+const {nomeProgetto} = require('./CONFIG.ts')
 const {JSONScribe} = require("./Utils/JSONScribe.ts")
 
 /**
@@ -94,7 +94,7 @@ export default defineConfig({
     },
 
     /* Configure projects for major browsers */
-    projects: new ProjectAgent("./test-suites/PochyxiGitHub.json").getProjectObject()
+    projects: new ProjectAgent("./test-suites/" + nomeProgetto + ".json").getProjectObject()
 
 
 });
